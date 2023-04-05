@@ -1,5 +1,6 @@
 import React from "react";
-import { ItemProps } from "../../types/todo-item";
+import { ItemProps, ItemStatus } from "../../types/todo-item";
+import { TodoItemStatus } from "../todo-item-status/todo-item-status.component";
 
 type Props = {
   item: ItemProps;
@@ -12,9 +13,12 @@ export const TodoItem = ({ item, deleteItem, onSelectItem }: Props) => {
 
   return (
     <>
-      <span>o</span>&nbsp;
+      <TodoItemStatus status={status} />
+      &nbsp;
       <span
-        style={{ textDecoration: status === "done" ? "line-through" : "" }}
+        style={{
+          textDecoration: status === ItemStatus.DONE ? "line-through" : "",
+        }}
         onClick={() => onSelectItem(item)}
       >
         {description}

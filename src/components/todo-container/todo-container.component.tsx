@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Header } from "../header/header.component";
 import { Footer } from "../footer/footer.component";
 import { TodoList } from "../todo-list/todo-list.component";
 import { staticData } from "../../data/items";
-import { ItemProps } from "../../types/todo-item";
+import { ItemProps, ItemStatus } from "../../types/todo-item";
 
 type StateProps = {
   tasks: Array<ItemProps>;
@@ -23,7 +23,7 @@ export const TodoContainer = () => {
     const newItem: ItemProps = {
       id: data.tasks.length + 1,
       description: "New Item",
-      status: "inProgress",
+      status: ItemStatus.IN_PROGRESS,
     };
 
     /**
