@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { ItemProps } from "../../types/todo-item";
+import { CustomTextField, Wrapper } from "./todo-item-edit.styles";
+import { TodoItemStatus } from "../todo-item-status/todo-item-status.component";
 
 type Props = {
   item: ItemProps;
@@ -16,17 +18,21 @@ export const TodoItemEdit = ({ item, onUpdateItem }: Props) => {
   };
 
   return (
-    <div>
-      <span>o</span>&nbsp;
+    <Wrapper>
+      <TodoItemStatus status={item.status} />
       <form style={{ display: "inline" }} onSubmit={handleUpdateItem}>
-        <input
-          type="text"
+        <CustomTextField
+          id={`todo-item-${item.id}`}
+          variant="outlined"
+          size="small"
+          autoFocus
           name="description"
           value={value}
-          // onChange={handleChangeDescription}
           onChange={(e) => setValue(e.target.value)}
+          // onChange={handleChangeDescription}
+          // type="text"
         />
       </form>
-    </div>
+    </Wrapper>
   );
 };
