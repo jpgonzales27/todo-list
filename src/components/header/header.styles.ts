@@ -16,8 +16,9 @@ export const Calendar = styled.p`
   border-color: #3d82eb;
   border-radius: 10px;
   text-align: center;
+  margin-right: 16px;
 
-  em {
+  span {
     display: block;
     color: white;
     background: #3d82eb;
@@ -25,4 +26,9 @@ export const Calendar = styled.p`
     border-bottom-right-radius: 3px;
     border-bottom-left-radius: 3px;
   }
+`;
+
+export const Title = styled.h1`
+  color: Black;
+  font-size: 40px;
 `;

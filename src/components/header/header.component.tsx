@@ -1,5 +1,5 @@
 import React from "react";
-import { Wrapper, Calendar } from "./header.styles";
+import { Wrapper, Calendar, Title } from "./header.styles";
 
 type Props = {
   dataLength: number;
@@ -15,10 +15,10 @@ export const Header = ({ dataLength }: Props) => {
   return (
     <Wrapper>
       <Calendar>
-        <em>{currentMonth}</em>
+        <span>{currentMonth}</span>
         {today.getDay()}
       </Calendar>
-      <h3>Today ({dataLength})</h3>
+      <Title>Today ({dataLength})</Title>
     </Wrapper>
   );
 };

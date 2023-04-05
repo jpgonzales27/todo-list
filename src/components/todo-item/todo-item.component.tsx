@@ -1,7 +1,8 @@
 import React from "react";
 import { ItemProps, ItemStatus } from "../../types/todo-item";
 import { TodoItemStatus } from "../todo-item-status/todo-item-status.component";
-import { TodoDescription, Wrapper } from "./todo-item.styles";
+import { TodoDescription, Wrapper, DeleteTodo } from "./todo-item.styles";
+// import DeleteIcon from "@mui/icons-material/Delete";
 
 type Props = {
   item: ItemProps;
@@ -26,7 +27,9 @@ export const TodoItem = ({ item, deleteItem, onSelectItem }: Props) => {
       </TodoDescription>
       &nbsp;
       <span>
-        <button onClick={() => deleteItem(id)}>x</button>
+        <DeleteTodo className="showButton" onClick={() => deleteItem(id)}>
+          x
+        </DeleteTodo>
       </span>
     </Wrapper>
   );
