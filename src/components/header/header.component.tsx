@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AppContext } from "../../context/app-context";
 
-type Props = {
-  dataLength: number;
-};
+// type Props = {
+//   dataLength: number;
+// };
 
-export const Header = ({ dataLength }: Props) => {
-  return <h3>Header ({dataLength})</h3>;
+export const Header = () => {
+  const { state } = useContext(AppContext);
+  console.log(state);
+  console.log(state.data);
+  return <h3>Header ({state.data.length})</h3>;
 };
