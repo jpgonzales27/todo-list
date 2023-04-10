@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Header } from "../header/header.component";
 import { Footer } from "../footer/footer.component";
 import { TodoList } from "../todo-list/todo-list.component";
@@ -8,13 +8,21 @@ import { ItemProps, ItemStatus } from "../../types/todo-item";
 type StateProps = {
   tasks: Array<ItemProps>;
   activeItem: ItemProps | null;
+  loading: boolean;
 };
 
 export const TodoContainer = () => {
   const [data, setData] = useState<StateProps>({
-    tasks: staticData,
+    tasks: [],
     activeItem: null,
+    loading: false,
   });
+
+  useEffect(() => {
+    return () => {
+      setData({ ...data, tasks: staticData });
+    };
+  }, []);
 
   const handleAddNewItem = () => {
     /**
@@ -64,7 +72,7 @@ export const TodoContainer = () => {
   };
   return (
     <>
-      <Header dataLength={data.tasks.length} />
+      <Header />
       <TodoList
         data={data.tasks}
         deleteItem={handleDeleteItem}

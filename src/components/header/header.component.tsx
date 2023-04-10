@@ -1,11 +1,13 @@
-import React from "react";
 import { Wrapper, Calendar, Title } from "./header.styles";
+import React, { useContext } from "react";
+import { AppContext } from "../../context/app-context";
 
-type Props = {
-  dataLength: number;
-};
+// type Props = {
+//   dataLength: number;
+// };
 
-export const Header = ({ dataLength }: Props) => {
+export const Header = () => {
+  const { state } = useContext(AppContext);
   const today = new Date();
   const currentMonth = new Intl.DateTimeFormat("en-EN", {
     month: "short",
@@ -18,7 +20,7 @@ export const Header = ({ dataLength }: Props) => {
         <span>{currentMonth}</span>
         {today.getDay()}
       </Calendar>
-      <Title>Today ({dataLength})</Title>
+      <Title>Today ({state.data.length})</Title>
     </Wrapper>
   );
 };
