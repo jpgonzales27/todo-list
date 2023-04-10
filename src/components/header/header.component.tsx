@@ -2,10 +2,6 @@ import { Wrapper, Calendar, Title } from "./header.styles";
 import React, { useContext } from "react";
 import { AppContext } from "../../context/app-context";
 
-// type Props = {
-//   dataLength: number;
-// };
-
 export const Header = () => {
   const { state } = useContext(AppContext);
   const today = new Date();
@@ -20,7 +16,7 @@ export const Header = () => {
         <span>{currentMonth}</span>
         {today.getDay()}
       </Calendar>
-      <Title>Today ({state.data.length})</Title>
+      <Title>Today ({state?.data.length})</Title>
     </Wrapper>
   );
 };

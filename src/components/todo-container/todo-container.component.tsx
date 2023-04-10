@@ -74,7 +74,6 @@ export const TodoContainer = () => {
     <>
       <Header />
       <TodoList
-        data={data.tasks}
         deleteItem={handleDeleteItem}
         activeItem={data.activeItem}
         onSelectItem={handleSelectItem}
