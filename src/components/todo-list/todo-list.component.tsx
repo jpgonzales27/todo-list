@@ -7,17 +7,10 @@ import { Types, actions } from "../../reducer/actions";
 
 export type Props = {
   activeItem: ItemProps | null;
-  deleteItem: (id: number) => void;
-  onSelectItem: (item: ItemProps) => void;
-  onUpdateItem: (id: number, itemData: Partial<ItemProps>) => void;
+  // deleteItem: (id: number) => void;
 };
 
-export const TodoList = ({
-  deleteItem,
-  activeItem,
-  onSelectItem,
-  onUpdateItem,
-}: Props) => {
+export const TodoList = ({ activeItem }: Props) => {
   const { state, dispatch } = useContext(AppContext);
 
   useEffect(() => {
@@ -25,22 +18,18 @@ export const TodoList = ({
   }, []);
 
   return (
-    <>
+    <React.Fragment>
       {state?.data.map((item: ItemProps) => (
         <React.Fragment key={item.id}>
-          {activeItem?.id === item.id ? (
-            <TodoItemEdit item={item} onUpdateItem={onUpdateItem} />
+          {state.activeItem?.id === item.id ? (
+            <TodoItemEdit item={item} />
           ) : (
-            <TodoItem
-              item={item}
-              deleteItem={deleteItem}
-              onSelectItem={onSelectItem}
-            />
+            <TodoItem item={item} />
           )}
 
           <br />
         </React.Fragment>
       ))}
-    </>
+    </React.Fragment>
   );
 };

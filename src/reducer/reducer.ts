@@ -52,6 +52,16 @@ export const reducer = (state: StateProps, action: any) => {
         activeItem: state.data[currentItemIndex],
       };
     }
+    case Types.Delete: {
+      const { payload } = action;
+      const newData: ItemProps[] = state.data.filter(
+        (item) => item.id !== payload.id
+      );
+      return {
+        ...state,
+        data: newData,
+      };
+    }
     default:
       return state;
   }

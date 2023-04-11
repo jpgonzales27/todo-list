@@ -1,20 +1,29 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { ItemProps } from "../../types/todo-item";
 import { CustomTextField, Wrapper } from "./todo-item-edit.styles";
 import { TodoItemStatus } from "../todo-item-status/todo-item-status.component";
+import { AppContext } from "../../context/app-context";
+import { Types } from "../../reducer/actions";
 
 type Props = {
   item: ItemProps;
-  onUpdateItem: (id: number, itemData: Partial<ItemProps>) => void;
 };
 
-export const TodoItemEdit = ({ item, onUpdateItem }: Props) => {
+export const TodoItemEdit = ({ item }: Props) => {
   const [value, setValue] = useState(item.description);
+  const { dispatch } = useContext(AppContext);
 
   const handleUpdateItem = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log("entro al formulario");
-    onUpdateItem(item.id, { description: value });
+    // onUpdateItem(item.id, { description: value });
+    dispatch({
+      type: Types.Update,
+      payload: {
+        id: item.id,
+        itemData: { description: value },
+      },
+    });
   };
 
   return (

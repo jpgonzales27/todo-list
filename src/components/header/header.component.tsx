@@ -4,17 +4,23 @@ import { AppContext } from "../../context/app-context";
 
 export const Header = () => {
   const { state } = useContext(AppContext);
-  const today = new Date();
+  const date = new Date();
+  const currentDay = date.toLocaleDateString("en-US", {
+    day: "numeric",
+  });
+  const currentMonth2 = date.toLocaleDateString("en-US", {
+    month: "short",
+  });
   const currentMonth = new Intl.DateTimeFormat("en-EN", {
     month: "short",
   })
-    .format(today)
-    .toLocaleUpperCase();
+    .format(date)
+    .toUpperCase();
   return (
     <Wrapper>
       <Calendar>
         <span>{currentMonth}</span>
-        {today.getDay()}
+        {currentDay}
       </Calendar>
       <Title>Today ({state?.data.length})</Title>
     </Wrapper>

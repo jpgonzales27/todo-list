@@ -73,12 +73,7 @@ export const TodoContainer = () => {
   return (
     <>
       <Header />
-      <TodoList
-        deleteItem={handleDeleteItem}
-        activeItem={data.activeItem}
-        onSelectItem={handleSelectItem}
-        onUpdateItem={handleUpdateItem}
-      />
+      <TodoList activeItem={data.activeItem} />
       <Footer />
     </>
   );
