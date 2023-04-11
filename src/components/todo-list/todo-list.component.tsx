@@ -5,12 +5,7 @@ import { TodoItemEdit } from "../todo-item-edit/todo-item-edit";
 import { AppContext } from "../../context/app-context";
 import { Types, actions } from "../../reducer/actions";
 
-export type Props = {
-  activeItem: ItemProps | null;
-  // deleteItem: (id: number) => void;
-};
-
-export const TodoList = ({ activeItem }: Props) => {
+export const TodoList = () => {
   const { state, dispatch } = useContext(AppContext);
 
   useEffect(() => {

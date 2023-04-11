@@ -22,6 +22,7 @@ export const reducer = (state: StateProps, action: any) => {
         description: "New Item",
         status: ItemStatus.IN_PROGRESS,
       };
+      // setData({ ...data, tasks: newData });
       return {
         ...state,
         data: [...state.data, newItem],
@@ -29,16 +30,14 @@ export const reducer = (state: StateProps, action: any) => {
     }
     case Types.Update: {
       const { payload } = action;
-      const currentItemIndex = state.data.findIndex(
-        (item) => item.id === payload.id
+      const updateData: ItemProps[] = state.data.map((tarea) =>
+        tarea.id === payload.id ? { ...tarea, ...payload.itemData } : tarea
       );
+
+      // setData({ ...data, tasks: updateData, activeItem: null });
       return {
         ...state,
-        data: [
-          ...state.data.slice(0, currentItemIndex),
-          { ...state.data[currentItemIndex], ...payload.itemData },
-          ...state.data.slice(currentItemIndex + 1),
-        ],
+        data: updateData,
         activeItem: null,
       };
     }
@@ -57,6 +56,7 @@ export const reducer = (state: StateProps, action: any) => {
       const newData: ItemProps[] = state.data.filter(
         (item) => item.id !== payload.id
       );
+      // setData({ ...data, tasks: newData });
       return {
         ...state,
         data: newData,

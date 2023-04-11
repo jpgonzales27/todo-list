@@ -73,7 +73,7 @@ export const TodoContainer = () => {
   return (
     <>
       <Header />
-      <TodoList activeItem={data.activeItem} />
+      <TodoList />
       <Footer />
     </>
   );
