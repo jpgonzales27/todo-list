@@ -79,7 +79,7 @@ export const TodoContainer = () => {
         onSelectItem={handleSelectItem}
         onUpdateItem={handleUpdateItem}
       />
-      <Footer addNewItem={handleAddNewItem} />
+      <Footer />
     </>
   );
 };

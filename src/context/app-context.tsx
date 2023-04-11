@@ -1,15 +1,18 @@
 import React, { Dispatch, useReducer } from "react";
 import { StateProps, initialState } from "../reducer/initial-state";
 import { reducer } from "../reducer/reducer";
-// import { ItemActions } from "../reducer/actions";
+import { ItemActions } from "../reducer/actions";
 
 type Props = {
   children: JSX.Element;
 };
 
-const AppContext = React.createContext({
-  state: {},
-  dispatch: {},
+const AppContext = React.createContext<{
+  state: StateProps;
+  dispatch: Dispatch<ItemActions>;
+}>({
+  state: initialState,
+  dispatch: () => null,
 });
 
 const AppContextProvider = ({ children }: Props) => {

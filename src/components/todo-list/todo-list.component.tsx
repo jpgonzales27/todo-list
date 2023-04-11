@@ -3,7 +3,7 @@ import { ItemProps } from "../../types/todo-item";
 import { TodoItem } from "../todo-item/todo-item.component";
 import { TodoItemEdit } from "../todo-item-edit/todo-item-edit";
 import { AppContext } from "../../context/app-context";
-import { actions } from "../../reducer/actions";
+import { Types, actions } from "../../reducer/actions";
 
 export type Props = {
   activeItem: ItemProps | null;
@@ -21,7 +21,7 @@ export const TodoList = ({
   const { state, dispatch } = useContext(AppContext);
 
   useEffect(() => {
-    dispatch({ type: actions.LOAD_TODO_ITEMS });
+    dispatch({ type: Types.Load });
   }, []);
 
   return (
