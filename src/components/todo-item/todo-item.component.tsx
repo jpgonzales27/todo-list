@@ -17,7 +17,7 @@ export const TodoItem = ({ item }: Props) => {
 
   return (
     <Wrapper>
-      <TodoItemStatus status={status} />
+      <TodoItemStatus status={status} id={id} />
       &nbsp;
       <TodoDescription
         style={{
