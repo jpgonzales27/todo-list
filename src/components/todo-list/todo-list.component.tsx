@@ -1,40 +1,30 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { ItemProps } from "../../types/todo-item";
 import { TodoItem } from "../todo-item/todo-item.component";
 import { TodoItemEdit } from "../todo-item-edit/todo-item-edit";
+import { AppContext } from "../../context/app-context";
+import { Types, actions } from "../../reducer/actions";
 
-export type Props = {
-  data: Array<ItemProps>;
-  activeItem: ItemProps | null;
-  deleteItem: (id: number) => void;
-  onSelectItem: (item: ItemProps) => void;
-  onUpdateItem: (id: number, itemData: Partial<ItemProps>) => void;
-};
+export const TodoList = () => {
+  const { state, dispatch } = useContext(AppContext);
 
-export const TodoList = ({
-  data,
-  deleteItem,
-  activeItem,
-  onSelectItem,
-  onUpdateItem,
-}: Props) => {
+  useEffect(() => {
+    dispatch({ type: Types.Load });
+  }, []);
+
   return (
-    <>
-      {data.map((item) => (
+    <React.Fragment>
+      {state?.data.map((item: ItemProps) => (
         <React.Fragment key={item.id}>
-          {activeItem?.id === item.id ? (
-            <TodoItemEdit item={item} onUpdateItem={onUpdateItem} />
+          {state.activeItem?.id === item.id ? (
+            <TodoItemEdit item={item} />
           ) : (
-            <TodoItem
-              item={item}
-              deleteItem={deleteItem}
-              onSelectItem={onSelectItem}
-            />
+            <TodoItem item={item} />
           )}
 
           <br />
         </React.Fragment>
       ))}
-    </>
+    </React.Fragment>
   );
 };
