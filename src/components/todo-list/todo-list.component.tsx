@@ -4,9 +4,14 @@ import { TodoItem } from "../todo-item/todo-item.component";
 import { TodoItemEdit } from "../todo-item-edit/todo-item-edit";
 import { AppContext } from "../../context/app-context";
 import { Types, actions } from "../../reducer/actions";
+import { useDispatch, useSelector } from "react-redux";
 
 export const TodoList = () => {
-  const { state, dispatch } = useContext(AppContext);
+  const { state } = useContext(AppContext);
+  const data = useSelector((state: any) => state.data);
+  const dispatch = useDispatch();
+
+  console.log(data);
 
   useEffect(() => {
     dispatch({ type: Types.Load });
@@ -14,7 +19,7 @@ export const TodoList = () => {
 
   return (
     <React.Fragment>
-      {state?.data.map((item: ItemProps) => (
+      {data.map((item: ItemProps) => (
         <React.Fragment key={item.id}>
           {state.activeItem?.id === item.id ? (
             <TodoItemEdit item={item} />
