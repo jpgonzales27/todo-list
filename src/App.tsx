@@ -1,7 +1,7 @@
 import { TodoContainer } from "./components/todo-container/todo-container.component";
 import { AppContextProvider } from "./context/app-context";
 import { Provider } from "react-redux";
-import { store } from "./state/state";
+import { store } from "./store/store";
 // import { store } from './store/store';
 
 function App() {

@@ -5,23 +5,25 @@ import { TodoItemEdit } from "../todo-item-edit/todo-item-edit";
 import { AppContext } from "../../context/app-context";
 import { Types, actions } from "../../reducer/actions";
 import { useDispatch, useSelector } from "react-redux";
+import { todoActions } from "../../slices/todoSlice";
+import { RootState } from "../../store/store";
 
 export const TodoList = () => {
-  const { state } = useContext(AppContext);
-  const data = useSelector((state: any) => state.data);
+  // const { state } = useContext(AppContext);
+  const { data, activeItem } = useSelector((state: RootState) => state.todo);
+
   const dispatch = useDispatch();
 
-  console.log(data);
-
   useEffect(() => {
-    dispatch({ type: Types.Load });
+    // dispatch({ type: Types.Load });
+    dispatch(todoActions.load());
   }, []);
 
   return (
     <React.Fragment>
       {data.map((item: ItemProps) => (
         <React.Fragment key={item.id}>
-          {state.activeItem?.id === item.id ? (
+          {activeItem?.id === item.id ? (
             <TodoItemEdit item={item} />
           ) : (
             <TodoItem item={item} />

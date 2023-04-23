@@ -6,7 +6,7 @@ import { StateProps } from "./initial-state";
 /**
  * Este reducer manejara la logica de la aplicacion
  */
-export const reducer = (state: any, action: any) => {
+export const reducer = (state: StateProps, action: any) => {
   switch (action.type) {
     case Types.Load: {
       // case actions.LOAD_TODO_ITEMS: {
