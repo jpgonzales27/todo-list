@@ -4,7 +4,13 @@ export enum ItemStatus {
 }
 
 export type ItemProps = {
-  id: number;
+  id: string;
+  description: string;
+  status: ItemStatus;
+};
+
+export type ItemPropsMongo = {
+  _id: string;
   description: string;
   status: ItemStatus;
 };

@@ -7,6 +7,8 @@ import { Types, actions } from "../../reducer/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { todoActions } from "../../slices/todoSlice";
 import { RootState } from "../../store/store";
+import { useGetAllTodosQuery } from "../../api/api";
+import { normalizeTodoData } from "../../utils/normailize-todo";
 
 export const TodoList = () => {
   // const { state } = useContext(AppContext);
@@ -14,10 +16,15 @@ export const TodoList = () => {
 
   const dispatch = useDispatch();
 
+  const { data: todosData } = useGetAllTodosQuery("");
+
   useEffect(() => {
     // dispatch({ type: Types.Load });
-    dispatch(todoActions.load());
-  }, []);
+    if (todosData) {
+      const dataNormalized = normalizeTodoData(todosData);
+      dispatch(todoActions.load(dataNormalized));
+    }
+  }, [todosData]);
 
   return (
     <React.Fragment>

@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { initialState } from "./initial-state";
-import { staticData } from "../data/items";
+// import { staticData } from "../data/items";
 import { ItemProps, ItemStatus } from "../types/todo-item";
 // import { initialState } from "../reducer/initial-state";
 
@@ -8,25 +8,20 @@ const todoSlice = createSlice({
   name: "todo",
   initialState: initialState,
   reducers: {
-    load: (state) => {
+    load: (state, action: PayloadAction<ItemProps[]>) => {
       return {
         ...state,
-        data: staticData,
+        data: action.payload,
       };
     },
-    add: (state) => {
-      const newItem: ItemProps = {
-        id: state.data.length + 1,
-        description: "New Item",
-        status: ItemStatus.IN_PROGRESS,
-      };
+    add: (state, action: PayloadAction<ItemProps>) => {
       // setData({ ...data, tasks: newData });
       return {
         ...state,
-        data: [...state.data, newItem],
+        data: [...state.data, action.payload],
       };
     },
-    remove: (state, action: PayloadAction<number>) => {
+    remove: (state, action: PayloadAction<string>) => {
       const { payload } = action;
       console.log(payload);
       const newData: ItemProps[] = state.data.filter((item) => {
