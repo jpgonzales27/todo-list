@@ -1,22 +1,23 @@
-import { createStore } from "redux";
+import { combineReducers, createStore } from "redux";
 import { reducer } from "../reducer/reducer";
 import { initialState } from "../reducer/initial-state";
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import todoReducer from "../slices/todoSlice";
-import { todosApi } from "../api/api";
 import { logger } from "./middleware/logger";
+import { todosApi } from "../api/todos-api";
 
 // let store = createStore(reducer, initialState);
-let store = configureStore({
-  reducer: {
-    todo: todoReducer,
-    [todosApi.reducerPath]: todosApi.reducer,
-  },
+
+const rootReducer = combineReducers({
+  todo: todoReducer,
+  [todosApi.reducerPath]: todosApi.reducer,
+});
+
+export const store = configureStore({
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(todosApi.middleware).concat(logger),
 });
 
-export type RootState = ReturnType<typeof store.getState>;
+export type RootState = ReturnType<typeof rootReducer>;
 export type AppDispatch = typeof store.dispatch;
-
-export { store };
