@@ -4,6 +4,7 @@ import { initialState } from "../reducer/initial-state";
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import todoReducer from "../slices/todoSlice";
 import { todosApi } from "../api/api";
+import { logger } from "./middleware/logger";
 
 // let store = createStore(reducer, initialState);
 let store = configureStore({
@@ -12,7 +13,7 @@ let store = configureStore({
     [todosApi.reducerPath]: todosApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(todosApi.middleware),
+    getDefaultMiddleware().concat(todosApi.middleware).concat(logger),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

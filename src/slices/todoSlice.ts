@@ -1,13 +1,42 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { initialState } from "./initial-state";
 // import { staticData } from "../data/items";
-import { ItemProps, ItemStatus } from "../types/todo-item";
+import { ItemProps, ItemPropsMongo, ItemStatus } from "../types/todo-item";
+import { API_BASE_URL, TODO_PREFIX } from "../api/api";
+import { normalizeTodoData } from "../utils/normailize-todo";
 // import { initialState } from "../reducer/initial-state";
 
 // action types
 // Document actions => procesada en los reducers, ejecutadas desde cualquier parte de la aplicacion
 // Initial actions => iniciar un flujo de acciones, se lanzan desde los componentes, nunca son procesados en los reducers, debe iniciar otras acciones
 // Event actions => son ejecutadas por otras acciones y se encargan de ejecutar otras funcione(s).
+
+export const fetchTodos = createAsyncThunk(
+  "todos/fetchTodosProcess",
+  async (params: Partial<ItemProps>, thunkApi) => {
+    /**
+     * 1 set loading true
+     * 2 fetch the data
+     * 3 dispatch the action load
+     * 4 set loading false
+     */
+    thunkApi.dispatch(todoActions.fetching(true));
+    const response = await fetch(`${API_BASE_URL}${TODO_PREFIX}`);
+    const data = await response.json();
+    thunkApi.dispatch(normalizeTodos(data));
+    // thunkApi.dispatch(todoActions.load(normalizeTodoData(data)));
+    // thunkApi.dispatch(todoActions.fetching(false));
+  }
+);
+
+export const normalizeTodos = createAsyncThunk(
+  "todos/normalizeTodos",
+  async (data: ItemPropsMongo[], thunkApi) => {
+    const dataNormalized = normalizeTodoData(data);
+    thunkApi.dispatch(todoActions.load(dataNormalized));
+    return null;
+  }
+);
 
 const todoSlice = createSlice({
   name: "todo",
@@ -70,6 +99,20 @@ const todoSlice = createSlice({
         activeItem: null,
       };
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchTodos.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(fetchTodos.fulfilled, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(normalizeTodos.pending, (state, action) => {
+      state.loading = false;
+    });
+    // builder.addCase(postTodo.fulfilled, (state, action) => {
+    //   state.addingItem = false;
+    // });
   },
 });
 

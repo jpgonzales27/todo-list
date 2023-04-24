@@ -5,7 +5,7 @@ import { TodoItemEdit } from "../todo-item-edit/todo-item-edit";
 import { AppContext } from "../../context/app-context";
 import { Types, actions } from "../../reducer/actions";
 import { useDispatch, useSelector } from "react-redux";
-import { todoActions } from "../../slices/todoSlice";
+import { fetchTodos, todoActions } from "../../slices/todoSlice";
 import { RootState } from "../../store/store";
 import { useGetAllTodosQuery } from "../../api/api";
 import { normalizeTodoData } from "../../utils/normailize-todo";
@@ -20,20 +20,21 @@ export const TodoList = () => {
 
   const dispatch = useDispatch();
 
-  const { data: todosData } = useGetAllTodosQuery("");
+  // const { data: todosData } = useGetAllTodosQuery("");
+
+  // useEffect(() => {
+  //   // dispatch({ type: Types.Load });
+
+  //   if (todosData) {
+  //     const dataNormalized = normalizeTodoData(todosData);
+  //     dispatch(todoActions.load(dataNormalized));
+  //     dispatch(todoActions.fetching(false));
+  //   }
+  // }, [todosData]);
 
   useEffect(() => {
-    // dispatch({ type: Types.Load });
-
-    if (todosData) {
-      const dataNormalized = normalizeTodoData(todosData);
-      dispatch(todoActions.load(dataNormalized));
-      dispatch(todoActions.fetching(false));
-    }
-  }, [todosData]);
-
-  useEffect(() => {
-    dispatch(todoActions.fetching(true));
+    // dispatch(todoActions.fetching(true));
+    dispatch(fetchTodos({}));
   }, []);
 
   return (
