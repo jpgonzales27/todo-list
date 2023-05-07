@@ -22,6 +22,21 @@ export const todosApi = Api.injectEndpoints({
       }),
       invalidatesTags: [{ type: "Todos", id: "LIST" }],
     }),
+    deleteTodo: builder.mutation({
+      query: (id) => ({
+        url: `/${TODO_PREFIX}/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [{ type: "Todos", id: "LIST" }],
+    }),
+    updateTodo: builder.mutation({
+      query: (updateTodo) => ({
+        url: `/${TODO_PREFIX}/${updateTodo.id}`,
+        method: "PATCH",
+        body: updateTodo,
+      }),
+      invalidatesTags: [{ type: "Todos", id: "LIST" }],
+    }),
   }),
   overrideExisting: true,
 });
