@@ -1,4 +1,3 @@
-import { staticData } from "../data/items";
 import { ItemProps } from "../types/todo-item";
 
 export type StateProps = {
@@ -6,6 +5,7 @@ export type StateProps = {
   activeItem: ItemProps | null;
   loading: boolean;
   addingItem: boolean;
+  deletetingItem: boolean;
 };
 
 export const initialState: StateProps = {
@@ -13,4 +13,5 @@ export const initialState: StateProps = {
   activeItem: null,
   loading: false,
   addingItem: false,
+  deletetingItem: false,
 };

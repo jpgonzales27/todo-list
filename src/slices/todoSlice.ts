@@ -1,10 +1,10 @@
 import { createAsyncThunk, PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { initialState } from "./initial-state";
 // import { staticData } from "../data/items";
-import { ItemProps, ItemPropsMongo, ItemStatus } from "../types/todo-item";
+import { ItemProps, ItemPropsMongo, ItemStatus, responseUpdateProps } from "../types/todo-item";
 import { API_BASE_URL } from "../api/api";
 import { TODO_PREFIX, todosApi } from "../api/todos-api";
-import { normalizeTodoData } from "../utils/normailize-todo";
+import { normalizeData, normalizeTodoData } from "../utils/normailize-todo";
 // import { initialState } from "../reducer/initial-state";
 
 // action types
@@ -30,56 +30,56 @@ export const fetchTodosMio = createAsyncThunk(
   }
 );
 
-export const fetchTodos = createAsyncThunk(
-  "todos/fetchTodosProcess",
-  async (params: string, thunkApi) => {
-    const response = await thunkApi.dispatch(
-      todosApi.endpoints.getAllTodos.initiate(params)
-    );
-    thunkApi.dispatch(normalizeTodos(response.data as ItemPropsMongo[]));
-    return response;
-  }
-);
+export const fetchTodos = createAsyncThunk("todos/fetchTodosProcess", async (params: string, thunkApi) => {
+  const response = await thunkApi.dispatch(todosApi.endpoints.getAllTodos.initiate(params));
+  thunkApi.dispatch(normalizeTodos(response.data as ItemPropsMongo[]));
+  return response;
+});
 
-export const postTodo = createAsyncThunk(
-  "todos/postTodoProcess",
-  async (params: Partial<ItemProps>, thunkApi) => {
-    thunkApi.dispatch(todoActions.addingItem(true));
-    const response = await thunkApi.dispatch(
-      todosApi.endpoints.addTodo.initiate(params)
-    );
-    const responseData = response as { data: ItemPropsMongo };
-    thunkApi.dispatch(
-      todoActions.add(normalizeTodoData([responseData.data])[0])
-    );
-    return responseData;
-  }
-);
+export const postTodo = createAsyncThunk("todos/postTodoProcess", async (params: Partial<ItemProps>, thunkApi) => {
+  thunkApi.dispatch(todoActions.addingItem(true));
+  const response = await thunkApi.dispatch(todosApi.endpoints.addTodo.initiate(params));
+  const responseData = response as { data: ItemPropsMongo };
+  thunkApi.dispatch(todoActions.add(normalizeTodoData([responseData.data])[0]));
+  return responseData;
+});
 
-export const createTodoMio = createAsyncThunk(
-  "todos/createTodo",
-  async (data: Partial<ItemProps>, thunkApi) => {
-    const response = await fetch(`${API_BASE_URL}${TODO_PREFIX}`, {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+export const deleteTodo = createAsyncThunk("todos/deleteTodosProcess", async (id: string, thunkApi) => {
+  const response = await thunkApi.dispatch(todosApi.endpoints.deleteTodo.initiate(id));
+  thunkApi.dispatch(todoActions.remove(id));
+  return response;
+});
 
-    const newData = await response.json();
-    thunkApi.dispatch(todoActions.add(newData));
+export const updateTodo = createAsyncThunk("todos/updateProcess", async (params: ItemProps, thunkApi) => {
+  console.log("PARAMS: ", params);
+  thunkApi.dispatch(todoActions.remove(params.id));
+  const response = await thunkApi.dispatch(todosApi.endpoints.updateTodo.initiate(params));
+  const responseData = response as responseUpdateProps;
+  if (responseData.data) {
+    const dataUpdate = normalizeData(responseData.data) as ItemProps;
+    thunkApi.dispatch(todoActions.add(normalizeData(responseData.data)));
   }
-);
+  return response;
+});
 
-export const normalizeTodos = createAsyncThunk(
-  "todos/normalizeTodos",
-  async (data: ItemPropsMongo[], thunkApi) => {
-    const dataNormalized = normalizeTodoData(data);
-    thunkApi.dispatch(todoActions.load(dataNormalized));
-    return null;
-  }
-);
+export const createTodoMio = createAsyncThunk("todos/createTodo", async (data: Partial<ItemProps>, thunkApi) => {
+  const response = await fetch(`${API_BASE_URL}${TODO_PREFIX}`, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  const newData = await response.json();
+  thunkApi.dispatch(todoActions.add(newData));
+});
+
+export const normalizeTodos = createAsyncThunk("todos/normalizeTodos", async (data: ItemPropsMongo[], thunkApi) => {
+  const dataNormalized = normalizeTodoData(data);
+  thunkApi.dispatch(todoActions.load(dataNormalized));
+  return null;
+});
 
 const todoSlice = createSlice({
   name: "todo",
@@ -107,44 +107,16 @@ const todoSlice = createSlice({
     addingItem: (state, action: PayloadAction<boolean>) => {
       state.addingItem = action.payload;
     },
-    // remove: (state, action: PayloadAction<string>) => {
-    //   const { payload } = action;
-    //   console.log(payload);
-    //   const newData: ItemProps[] = state.data.filter((item) => {
-    //     return item.id !== payload;
-    //   });
-    //   // setData({ ...data, tasks: newData });
-    //   return {
-    //     ...state,
-    //     data: newData,
-    //   };
-    // },
-    // select: (state, action: PayloadAction<number>) => {
-    //   const { payload } = action;
-    //   const currentItemIndex = state.data.findIndex(
-    //     (item) => item.id === payload
-    //   );
-    //   return {
-    //     ...state,
-    //     activeItem: state.data[currentItemIndex],
-    //   };
-    // },
-    // update: (
-    //   state,
-    //   action: PayloadAction<{ id: number; dataUpdated: Partial<ItemProps> }>
-    // ) => {
-    //   const { payload } = action;
-    //   const updateData: ItemProps[] = state.data.map((tarea) =>
-    //     tarea.id === payload.id ? { ...tarea, ...payload.dataUpdated } : tarea
-    //   );
-
-    //   // setData({ ...data, tasks: updateData, activeItem: null });
-    //   return {
-    //     ...state,
-    //     data: updateData,
-    //     activeItem: null,
-    //   };
-    // },
+    deletetingItem: (state, action: PayloadAction<boolean>) => {
+      state.deletetingItem = action.payload;
+    },
+    remove: (state, action: PayloadAction<string>) => {
+      const selectItemIndex = state.data.findIndex((item) => item.id === action.payload);
+      state.data.splice(selectItemIndex, 1);
+    },
+    selectItem: (state, action: PayloadAction<ItemProps | null>) => {
+      state.activeItem = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchTodos.pending, (state, action) => {
@@ -158,6 +130,18 @@ const todoSlice = createSlice({
     });
     builder.addCase(postTodo.fulfilled, (state, action) => {
       state.addingItem = false;
+    });
+    builder.addCase(deleteTodo.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(deleteTodo.fulfilled, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(updateTodo.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(updateTodo.fulfilled, (state, action) => {
+      state.loading = false;
     });
   },
 });

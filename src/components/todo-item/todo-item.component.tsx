@@ -1,61 +1,47 @@
-import React, { useContext } from "react";
 import { ItemProps, ItemStatus } from "../../types/todo-item";
 import { TodoItemStatus } from "../todo-item-status/todo-item-status.component";
 import { TodoDescription, Wrapper, DeleteTodo } from "./todo-item.styles";
-import { AppContext } from "../../context/app-context";
-import { Types } from "../../reducer/actions";
-import { useDispatch, useSelector } from "react-redux";
-import { todoActions } from "../../slices/todoSlice";
-// import DeleteIcon from "@mui/icons-material/Delete";
+import { useDispatch } from "react-redux";
+import { deleteTodo, todoActions } from "../../slices/todoSlice";
+import { AppDispatch } from "../../store/store";
 
 type Props = {
   item: ItemProps;
-  // deleteItem: (id: number) => void;
 };
 
 export const TodoItem = ({ item }: Props) => {
+  const dispatch = useDispatch<AppDispatch>();
   const { id, description, status } = item;
-  // const { dispatch } = useContext(AppContext);
-  const dispatch = useDispatch();
+
+  const handleClick = async () => {
+    try {
+      dispatch(deleteTodo(id));
+    } catch (error: any) {
+      if (error instanceof Error) {
+        console.log(error.message);
+      }
+    }
+  };
+
+  const handleSelectItem = async () => {
+    dispatch(todoActions.selectItem(item));
+  };
 
   return (
     <Wrapper>
-      <TodoItemStatus status={status} id={id} />
+      <TodoItemStatus status={status} id={id} description={description} />
       &nbsp;
       <TodoDescription
         style={{
           textDecoration: status === ItemStatus.DONE ? "line-through" : "",
         }}
-        // onClick={() => onSelectItem(item)}
-        // onClick={() =>
-        //   dispatch({
-        //     type: Types.Select,
-        //     payload: {
-        //       id: item.id,
-        //     },
-        //   })
-        // }
-        onClick={() => dispatch(todoActions.select(item.id))}
+        onClick={handleSelectItem}
       >
         {description}
       </TodoDescription>
       &nbsp;
       <span>
-        {/* <DeleteTodo
-          className="showButton"
-          onClick={() =>
-            dispatch({
-              type: Types.Delete,
-              payload: {
-                id: item.id,
-              },
-            })
-          }
-        > */}
-        <DeleteTodo
-          className="showButton"
-          onClick={() => dispatch(todoActions.remove(item.id))}
-        >
+        <DeleteTodo className="showButton" onClick={handleClick}>
           x
         </DeleteTodo>
       </span>

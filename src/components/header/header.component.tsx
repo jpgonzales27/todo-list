@@ -1,11 +1,7 @@
 import { Wrapper, Calendar, Title } from "./header.styles";
-import React, { useContext } from "react";
-import { AppContext } from "../../context/app-context";
 import { useSelector } from "react-redux";
 
 export const Header = () => {
-  // const { state } = useContext(AppContext);
-
   const data = useSelector((state: any) => state.todo.data);
   const date = new Date();
   const currentDay = date.toLocaleDateString("en-US", {
@@ -25,7 +21,6 @@ export const Header = () => {
         <span>{currentMonth}</span>
         {currentDay}
       </Calendar>
-      {/* <Title>Today ({state?.data.length})</Title> */}
       <Title>Today ({data.length})</Title>
     </Wrapper>
   );

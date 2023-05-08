@@ -1,41 +1,37 @@
-import React, { useContext, useState } from "react";
-import { ItemProps } from "../../types/todo-item";
+import React, { useState } from "react";
+import { ItemProps, ItemStatus } from "../../types/todo-item";
 import { CustomTextField, Wrapper } from "./todo-item-edit.styles";
 import { TodoItemStatus } from "../todo-item-status/todo-item-status.component";
-import { AppContext } from "../../context/app-context";
-import { Types } from "../../reducer/actions";
 import { useDispatch } from "react-redux";
-import { todoActions } from "../../slices/todoSlice";
+import { AppDispatch } from "../../store/store";
+import { todoActions, updateTodo } from "../../slices/todoSlice";
 
 type Props = {
   item: ItemProps;
 };
 
 export const TodoItemEdit = ({ item }: Props) => {
+  const { id, description, status } = item;
   const [value, setValue] = useState(item.description);
-  // const { dispatch } = useContext(AppContext);
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleUpdateItem = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log("entro al formulario");
-    // onUpdateItem(item.id, { description: value });
-    // dispatch({
-    //   type: Types.Update,
-    //   payload: {
-    //     id: item.id,
-    //     itemData: { description: value },
-    //   },
-    // });
+    dispatch(todoActions.selectItem(null));
     dispatch(
-      todoActions.update({ id: item.id, dataUpdated: { description: value } })
+      updateTodo({
+        id: id,
+        description: value,
+        status: status === ItemStatus.DONE ? ItemStatus.IN_PROGRESS : ItemStatus.DONE,
+      })
     );
   };
 
   return (
     <Wrapper>
-      <TodoItemStatus status={item.status} id={item.id} />
+      <TodoItemStatus status={item.status} id={item.id} description={item.description} />
       <form style={{ display: "inline" }} onSubmit={handleUpdateItem}>
         <CustomTextField
           id={`todo-item-${item.id}`}
@@ -45,8 +41,6 @@ export const TodoItemEdit = ({ item }: Props) => {
           name="description"
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          // onChange={handleChangeDescription}
-          // type="text"
         />
       </form>
     </Wrapper>

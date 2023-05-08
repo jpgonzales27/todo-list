@@ -22,17 +22,17 @@ export const todosApi = Api.injectEndpoints({
       }),
       invalidatesTags: [{ type: "Todos", id: "LIST" }],
     }),
-    deleteTodo: builder.mutation({
+    deleteTodo: builder.mutation<void, string>({
       query: (id) => ({
         url: `/${TODO_PREFIX}/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: [{ type: "Todos", id: "LIST" }],
     }),
-    updateTodo: builder.mutation({
+    updateTodo: builder.mutation<ItemPropsMongo, Partial<ItemProps>>({
       query: (updateTodo) => ({
         url: `/${TODO_PREFIX}/${updateTodo.id}`,
-        method: "PATCH",
+        method: "PUT",
         body: updateTodo,
       }),
       invalidatesTags: [{ type: "Todos", id: "LIST" }],
@@ -41,4 +41,4 @@ export const todosApi = Api.injectEndpoints({
   overrideExisting: true,
 });
 
-export const { useGetAllTodosQuery, useAddTodoMutation } = todosApi;
+export const { useGetAllTodosQuery, useAddTodoMutation, useDeleteTodoMutation, useUpdateTodoMutation } = todosApi;

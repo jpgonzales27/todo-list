@@ -14,3 +14,11 @@ export type ItemPropsMongo = {
   description: string;
   status: ItemStatus;
 };
+
+export type responseUpdateProps = {
+  error?: {
+    status: number;
+    data: {};
+  };
+  data: ItemPropsMongo;
+};

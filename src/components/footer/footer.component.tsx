@@ -1,35 +1,13 @@
-import React, { useContext } from "react";
 import { AddIcon, AddText, Wrapper } from "./footer.styles";
-import { Types, actions } from "../../reducer/actions";
-import { AppContext } from "../../context/app-context";
 import { useDispatch, useSelector } from "react-redux";
-import { postTodo, todoActions } from "../../slices/todoSlice";
-// import { useAddTodoMutation } from "../../api/api";
+import { postTodo } from "../../slices/todoSlice";
 import { ItemStatus } from "../../types/todo-item";
-import { normalizeTodoData } from "../../utils/normailize-todo";
 import { Box, Skeleton, Typography } from "@mui/material";
 import { AppDispatch, RootState } from "../../store/store";
 
 export const Footer = () => {
-  // const { dispatch } = useContext(AppContext);
-
   const dispatch = useDispatch<AppDispatch>();
-  // const [addTodoMutation] = useAddTodoMutation();
   const { addingItem } = useSelector((state: RootState) => state.todo);
-
-  // const handleClick = async () => {
-  //   try {
-  //     const response = await addTodoMutation({
-  //       description: "NUEVO ITEM",
-  //       status: ItemStatus.IN_PROGRESS,
-  //     });
-  //     dispatch(todoActions.add(normalizeTodoData([response.data])[0]));
-  //   } catch (error: any) {
-  //     if (error instanceof Error) {
-  //       console.log(error.message);
-  //     }
-  //   }
-  // };
 
   const handleClick = async () => {
     try {
@@ -44,7 +22,6 @@ export const Footer = () => {
   };
 
   return (
-    // <Wrapper onClick={() => dispatch({ type: Types.Add })}>
     <>
       {addingItem && (
         <Box display="flex" alignItems="center" paddingX={1}>
