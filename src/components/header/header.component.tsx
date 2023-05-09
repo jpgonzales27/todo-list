@@ -1,3 +1,4 @@
+import { Logout } from "../logout/Logout.component";
 import { Wrapper, Calendar, Title } from "./header.styles";
 import { useSelector } from "react-redux";
 
@@ -22,6 +23,7 @@ export const Header = () => {
         {currentDay}
       </Calendar>
       <Title>Today ({data.length})</Title>
+      <Logout />
     </Wrapper>
   );
 };
