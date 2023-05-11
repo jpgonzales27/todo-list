@@ -1,5 +1,5 @@
 import { combineReducers, createStore } from "redux";
-import { reducer } from "../reducer/reducer";
+//import { reducer } from "../reducer/reducer";
 import { initialState } from "../reducer/initial-state";
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import todoReducer from "../slices/todoSlice";
