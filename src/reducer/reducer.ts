@@ -1,6 +1,4 @@
-import { staticData } from "../data/items";
 import { ItemProps, ItemStatus } from "../types/todo-item";
-import { actions } from "./actions";
 import { Types } from "./actions";
 import { StateProps } from "./initial-state";
 /**
@@ -44,9 +42,7 @@ export const reducer = (state: StateProps, action: any) => {
     }
     case Types.Select: {
       const { payload } = action;
-      const currentItemIndex = state.data.findIndex(
-        (item) => item.id === payload.id
-      );
+      const currentItemIndex = state.data.findIndex((item) => item.id === payload.id);
       return {
         ...state,
         activeItem: state.data[currentItemIndex],
@@ -54,9 +50,7 @@ export const reducer = (state: StateProps, action: any) => {
     }
     case Types.Delete: {
       const { payload } = action;
-      const newData: ItemProps[] = state.data.filter(
-        (item) => item.id !== payload.id
-      );
+      const newData: ItemProps[] = state.data.filter((item) => item.id !== payload.id);
       // setData({ ...data, tasks: newData });
       return {
         ...state,
